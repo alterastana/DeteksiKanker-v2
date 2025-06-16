@@ -1,9 +1,8 @@
 streamlit==1.27.2
 streamlit-lottie==0.0.5
-tensorflow-cpu>=2.19.0rc0
+tflite-runtime
+pillow
 numpy
-Pillow
-joblib
-scikit-learn
-lightgbm
-requests
+pandas
+matplotlib
+opencv-python-headless
