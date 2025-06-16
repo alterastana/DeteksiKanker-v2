@@ -1,7 +1,10 @@
 streamlit
+streamlit-lottie
+tensorflow
 numpy
 Pillow
 joblib
 scikit-learn
 lightgbm
-tensorflow==2.15.0
+requests
+matplotlib
