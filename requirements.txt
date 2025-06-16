@@ -1,6 +1,6 @@
-streamlit==1.27.2
-streamlit-lottie==0.0.5
-tensorflow==2.13.0
+streamlit
+streamlit-lottie
+tensorflow==2.11.1
 numpy
 Pillow
 joblib
@@ -8,3 +8,4 @@ scikit-learn
 lightgbm
 requests
 matplotlib
+opencv-python-headless
