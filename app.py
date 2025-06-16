@@ -10,7 +10,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from streamlit_lottie import st_lottie
 import requests
 
-# === Fungsi: Memuat animasi dari URL ===
+# Fungsi untuk memuat animasi Lottie dari URL
 def load_lottieurl(url):
     try:
         r = requests.get(url)
@@ -20,11 +20,11 @@ def load_lottieurl(url):
     except:
         return None
 
-# === Animasi ===
+# Animasi
 lottie_cancer = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_qp1q7mct.json")
 lottie_checkup = load_lottieurl("https://assets9.lottiefiles.com/private_files/lf30_jk6c1n2h.json")
 
-# === Load model (cached) ===
+# Load model (dengan cache)
 @st.cache_resource
 def load_models():
     resnet = load_model("resnet50_feature_extractor.keras")
@@ -34,35 +34,34 @@ def load_models():
 resnet_model, lgb_model = load_models()
 class_labels = {0: "Benign", 1: "Malignant", 2: "Normal"}
 
-# === SIDEBAR ===
+# Sidebar
 st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3774/3774299.png", width=100)
 st.sidebar.markdown("### 🧬 Aplikasi Deteksi Kanker Payudara")
 st.sidebar.markdown("**Mata Kuliah: Kecerdasan Buatan**  \n**Kelompok 8**")
 st.sidebar.info(
-    "🔍 Aplikasi ini menggunakan model CNN (ResNet50) untuk mengekstrak fitur dari gambar mamografi, "
-    "kemudian mengklasifikasikannya menggunakan LightGBM. Proses pelatihan dioptimasi dengan algoritma "
-    "**Root Mean Square Propagation (RMSProp)** untuk meningkatkan akurasi deteksi."
+    "🔍 Model CNN (ResNet50) digunakan untuk ekstraksi fitur dari gambar mamografi, "
+    "kemudian diklasifikasikan menggunakan LightGBM. Optimasi dilakukan dengan algoritma "
+    "**Root Mean Square Propagation (RMSProp)**."
 )
 
-# === HEADER ===
+# Header
 st.markdown("<h1 style='text-align: center;'>📷 Sistem Deteksi Otomatis Kanker Payudara</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Unggah gambar mamografi untuk mendeteksi kategori kanker: <b>Benign</b>, <b>Malignant</b>, atau <b>Normal</b>.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Unggah gambar mamografi untuk mengklasifikasi: <b>Benign</b>, <b>Malignant</b>, atau <b>Normal</b>.</p>", unsafe_allow_html=True)
 
 if lottie_cancer:
     st_lottie(lottie_cancer, height=200, key="header")
 
 st.markdown("---")
 
-# === FORM PASIEN ===
+# Formulir pasien
 with st.expander("🧾 Formulir Pasien"):
     nama = st.text_input("👤 Nama Pasien")
     usia = st.number_input("🎂 Usia", min_value=1, max_value=120, value=30)
     tanggal = st.date_input("📅 Tanggal Pemeriksaan")
 
-# === UPLOAD GAMBAR ===
+# Upload gambar
 uploaded_file = st.file_uploader("📤 Upload Gambar Mamografi", type=["jpg", "jpeg", "png"])
 
-# === PROSES DAN KLASIFIKASI ===
 if uploaded_file:
     try:
         col1, col2 = st.columns([1, 2])
@@ -90,15 +89,15 @@ if uploaded_file:
 
             if result == "Benign":
                 st.success("🟢 Hasil: Benign (Jinak)")
-                st.markdown("Tumor jinak umumnya tidak menyebar dan tidak bersifat agresif. Namun tetap perlu pemantauan medis secara berkala.")
+                st.markdown("Tumor jinak umumnya tidak menyebar dan tidak bersifat agresif. Tetap lakukan pemeriksaan berkala.")
             elif result == "Malignant":
                 st.error("🔴 Hasil: Malignant (Ganas)")
-                st.markdown("Jenis kanker ganas bersifat agresif dan dapat menyebar cepat. Segera konsultasikan ke dokter spesialis.")
+                st.markdown("Tumor ganas dapat menyebar cepat. Segera konsultasikan ke dokter spesialis.")
             elif result == "Normal":
                 st.success("✅ Hasil: Normal")
-                st.markdown("Tidak ditemukan indikasi kelainan mencurigakan. Tetap disarankan melakukan pemeriksaan rutin.")
+                st.markdown("Tidak ditemukan indikasi kelainan. Pemeriksaan rutin tetap disarankan.")
 
-            # === Confidence Score ===
+            # Confidence Score
             if st.checkbox("📈 Tampilkan Confidence Score (%)", value=True):
                 if hasattr(lgb_model, "predict_proba"):
                     proba = lgb_model.predict_proba(features)[0]
@@ -116,18 +115,18 @@ if uploaded_file:
                         "Probabilitas (%)": [f"{p:.2f}%" for p in persentase]
                     })
                 else:
-                    st.warning("⚠️ Model tidak mendukung prediksi probabilitas.")
+                    st.warning("⚠️ Model tidak mendukung probabilitas prediksi.")
     except Exception as e:
         st.error(f"❌ Terjadi kesalahan saat prediksi: {str(e)}")
 else:
-    st.warning("👈 Silakan unggah gambar untuk memulai analisis.")
+    st.warning("👈 Silakan unggah gambar terlebih dahulu.")
 
-# === EDUKASI TAMBAHAN ===
+# Edukasi tambahan
 with st.expander("ℹ️ Tentang Kanker Payudara"):
     st.markdown("""
-    - **Benign**: Tumor tidak ganas dan tidak menyebar ke jaringan lain. Umumnya mudah ditangani.
-    - **Malignant**: Tumor ganas yang dapat menyebar dan bersifat berbahaya jika tidak ditangani dini.
-    - **Normal**: Tidak ditemukan indikasi massa mencurigakan pada gambar mamografi.
+    - **Benign**: Tumor tidak ganas, tidak menyebar. Tetap perlu pemantauan.
+    - **Malignant**: Kanker ganas. Butuh penanganan medis segera.
+    - **Normal**: Tidak ada indikasi kelainan.
 
-    👉 Tetap lakukan pemeriksaan rutin dan konsultasi dengan tenaga medis berlisensi.
+    👉 Lakukan pemeriksaan rutin dan konsultasikan dengan tenaga medis profesional.
     """)
