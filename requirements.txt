@@ -6,7 +6,7 @@ numpy
 Pillow
 
 # Machine Learning
-tensorflow==2.15.0
+onnxruntime
 scikit-learn
 joblib
 lightgbm
