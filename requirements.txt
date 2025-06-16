@@ -4,4 +4,4 @@ Pillow
 joblib
 scikit-learn
 lightgbm
-tensorflow==2.12.0
+tensorflow==2.15.0
