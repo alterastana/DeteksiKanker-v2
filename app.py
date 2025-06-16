@@ -7,24 +7,8 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
-from streamlit_lottie import st_lottie
-import requests
 
-# Fungsi untuk memuat animasi Lottie dari URL
-def load_lottieurl(url):
-    try:
-        r = requests.get(url)
-        if r.status_code != 200:
-            return None
-        return r.json()
-    except:
-        return None
-
-# Animasi
-lottie_cancer = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_qp1q7mct.json")
-lottie_checkup = load_lottieurl("https://assets9.lottiefiles.com/private_files/lf30_jk6c1n2h.json")
-
-# Load model (dengan cache)
+# Load model (cached)
 @st.cache_resource
 def load_models():
     resnet = load_model("resnet50_feature_extractor.keras")
@@ -47,10 +31,6 @@ st.sidebar.info(
 # Header
 st.markdown("<h1 style='text-align: center;'>📷 Sistem Deteksi Otomatis Kanker Payudara</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>Unggah gambar mamografi untuk mengklasifikasi: <b>Benign</b>, <b>Malignant</b>, atau <b>Normal</b>.</p>", unsafe_allow_html=True)
-
-if lottie_cancer:
-    st_lottie(lottie_cancer, height=200, key="header")
-
 st.markdown("---")
 
 # Formulir pasien
@@ -71,8 +51,6 @@ if uploaded_file:
             st.image(image, caption="🖼️ Gambar Mamografi", use_column_width=True)
 
         with col2:
-            if lottie_checkup:
-                st_lottie(lottie_checkup, height=150, key="loading")
             st.info("🔎 Gambar sedang diproses...")
 
             image = image.resize((224, 224))
