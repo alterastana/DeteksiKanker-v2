@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
 
-# Load model (cached)
+# Load model dengan caching
 @st.cache_resource
 def load_models():
     resnet = load_model("resnet50_feature_extractor.keras")
@@ -33,15 +33,16 @@ st.markdown("<h1 style='text-align: center;'>📷 Sistem Deteksi Otomatis Kanker
 st.markdown("<p style='text-align: center;'>Unggah gambar mamografi untuk mengklasifikasi: <b>Benign</b>, <b>Malignant</b>, atau <b>Normal</b>.</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Form Pasien
+# Formulir Pasien
 with st.expander("🧾 Formulir Pasien"):
     nama = st.text_input("👤 Nama Pasien")
     usia = st.number_input("🎂 Usia", min_value=1, max_value=120, value=30)
     tanggal = st.date_input("📅 Tanggal Pemeriksaan")
 
-# Upload Gambar
+# Upload gambar
 uploaded_file = st.file_uploader("📤 Upload Gambar Mamografi", type=["jpg", "jpeg", "png"])
 
+# Prediksi jika gambar ada
 if uploaded_file:
     try:
         col1, col2 = st.columns([1, 2])
@@ -99,7 +100,7 @@ if uploaded_file:
 else:
     st.warning("👈 Silakan unggah gambar terlebih dahulu.")
 
-# Edukasi tambahan
+# Edukasi
 with st.expander("ℹ️ Tentang Kanker Payudara"):
     st.markdown("""
     - **Benign**: Tumor tidak ganas, tidak menyebar. Tetap perlu pemantauan.
