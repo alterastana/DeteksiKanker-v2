@@ -33,13 +33,13 @@ st.markdown("<h1 style='text-align: center;'>📷 Sistem Deteksi Otomatis Kanker
 st.markdown("<p style='text-align: center;'>Unggah gambar mamografi untuk mengklasifikasi: <b>Benign</b>, <b>Malignant</b>, atau <b>Normal</b>.</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Formulir pasien
+# Form Pasien
 with st.expander("🧾 Formulir Pasien"):
     nama = st.text_input("👤 Nama Pasien")
     usia = st.number_input("🎂 Usia", min_value=1, max_value=120, value=30)
     tanggal = st.date_input("📅 Tanggal Pemeriksaan")
 
-# Upload gambar
+# Upload Gambar
 uploaded_file = st.file_uploader("📤 Upload Gambar Mamografi", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
