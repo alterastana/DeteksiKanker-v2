@@ -1,10 +1,15 @@
+# Web UI
 streamlit
-streamlit-lottie
-tensorflow
+
+# Gambar & Data
 numpy
 Pillow
-joblib
+
+# Machine Learning
+tensorflow==2.15.0
 scikit-learn
+joblib
 lightgbm
-requests
+
+# Tambahan (opsional tapi berguna)
 matplotlib
