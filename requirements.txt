@@ -1,15 +1,10 @@
-# Web UI
 streamlit
-
-# Gambar & Data
+streamlit-lottie
+tensorflow
 numpy
 Pillow
-
-# Machine Learning
-onnxruntime
-scikit-learn
 joblib
+scikit-learn
 lightgbm
-
-# Tambahan (opsional tapi berguna)
+requests
 matplotlib
